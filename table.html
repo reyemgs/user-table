@@ -1,52 +1,67 @@
-<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="styles/table.css" />
-    <link rel="shortcut icon" href="ico/favicon.ico" />
-    <title>Table</title>
-  </head>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="styles/table.css" />
+        <link rel="shortcut icon" href="ico/favicon.ico" />
+        <title>Table</title>
+    </head>
 
-  <body>
-    <header>
-      <h1>User Table</h1>
-    </header>
+    <body>
+        <header>
+            <h1>User Table</h1>
+        </header>
 
-    <div class="search">
-      <input type="text" id="search-id" placeholder="Search for ID..." />
-      <input type="text" id="search-name" placeholder="Search for name..." />
-      <input type="text" id="search-date" placeholder="Search for date..." />
-    </div>
+        <div class="search">
+            <input type="text" id="search-id" placeholder="Search for ID..." />
+            <input
+                type="text"
+                id="search-name"
+                placeholder="Search for name..."
+            />
+            <input
+                type="text"
+                id="search-date"
+                placeholder="Search for date..."
+            />
+        </div>
 
-    <div class="add-delete-buttons">
-      <button class="add-user" id="add-user">Add</button>
-      <button class="delete-user" id="delete-user">Delete</button>
-      <input type="text" class="delete-input" id="delete-input" placeholder="ID" />
-      </div>
-    </div>
+        <div class="add-delete-buttons">
+            <button class="add-user" id="add-user">
+                Add
+            </button>
+            <button class="delete-user" id="delete-user">
+                Delete
+            </button>
+            <input
+                type="text"
+                class="delete-input"
+                id="delete-input"
+                placeholder="ID"
+            />
+        </div>
 
-    <table class="content-table">
-      <thead id="head-table">
-        <th class="sort-id">ID</th>
-        <th class="sort-name">Name</th>
-        <th class="sort-date">Date</th>
-      </thead>
-      <tbody id="user-table"></tbody>
-    </table>
+        <table class="content-table">
+            <thead id="head-table">
+                <th class="sort-id">ID</th>
+                <th class="sort-name">Name</th>
+                <th class="sort-date">Date</th>
+            </thead>
+            <tbody id="user-table"></tbody>
+        </table>
 
-    <div class="pages" id="pages">
-      <div class="page-buttons" id="page-buttons"></div>
-      <select id='selection'>
-        <option value="5">5</option>
-        <option value="10">10</option>
-        <option value="15">15</option>
-        <option value="20">20</option>
-        <option value="25">25</option>
-        <option value="50">50</option>
-      </select>
-    </div>
-    <script src="scripts/userlist.js"></script>
-    <script src="scripts/table.js"></script>
-  </body>
-</html>
+        <div class="pages" id="pages">
+            <div class="page-buttons" id="page-buttons"></div>
+            <select id="selection">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+            </select>
+        </div>
+        <script src="scripts/userlist.js"></script>
+        <script src="scripts/table.js"></script>
+    </body>
+</html>;

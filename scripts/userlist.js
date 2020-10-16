@@ -4,7 +4,7 @@ class UserList {
     }
 
     setUser(id, name, date) {
-        let user = { id: id, name: name, date: date };
+        const user = { id: id, name: name, date: date };
         this.userList.push(user);
     }
 

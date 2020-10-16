@@ -14,7 +14,6 @@ header {
     -webkit-user-select: none;
 }
 
-
 input[type=text] {
     border: 2px solid #dddddd;
     border-radius: 8px;
@@ -111,7 +110,6 @@ thead th:hover {
 
 }
 
-
 .add-delete-buttons {
     margin-top: 15px;
     margin-bottom: 20px;
@@ -184,7 +182,6 @@ thead th:hover {
     background-color: #009879;
     color: #ffffff;
 }
-
 
 .btn-save,
 .btn-cancel {
