@@ -290,9 +290,6 @@ class Table {
     isUndefinedID() {
         return this.list.getUserByID(+this.searchIdInput.value) == undefined;
     }
-    isUndefinedName() {
-        return this.list.getUserByName(this.searchIdName.value) == undefined;
-    }
 
     searchID() {
         this.tbody.innerHTML = '';
