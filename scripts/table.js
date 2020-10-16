@@ -27,18 +27,27 @@ class Table {
 
         this.list = new UserList();
         this.init();
+
+        this.responseData = null;
     }
 
     init() {
-        this.loadRows(userList);
-        this.renderPage();
-        this.generateButtons();
-        this.events();
+        (async () => {
+            await this.request();
+            await this.renderPage();
+            await this.generateButtons();
+            await this.events();
+        })();
     }
 
-    loadRows() {
-        this.list.userList = userList;
+    async request() {
+        const data = await this.list.loadAllUsers();
+        this.list.userList = data;
     }
+
+    // loadRows() {
+    //     this.list.userList = userList;
+    // }
 
     events() {
         this.addButton.addEventListener('click', () => this.createRow());
@@ -364,7 +373,6 @@ class Table {
         } else if (td.classList.contains('date')) {
             user.date = td.textContent.trim();
         }
-        console.log(user);
     }
 
     inEditing(td) {

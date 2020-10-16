@@ -21,57 +21,15 @@ class UserList {
     getUserByDate(date) {
         return this.userList.filter(item => item.date.includes(date));
     }
-}
 
-let userList = [
-    { id: 1, name: 'Anton', date: '25.05.1998' },
-    { id: 2, name: 'Ivan', date: '04.02.1995' },
-    { id: 3, name: 'Sergey', date: '12.04.1996' },
-    { id: 4, name: 'Ilya', date: '30.10.1994' },
-    { id: 5, name: 'John', date: '17.08.1993' },
-    { id: 6, name: 'Jacob', date: '07.05.1984' },
-    { id: 7, name: 'Andrey', date: '26.08.1990' },
-    { id: 8, name: 'Donald', date: '23.02.1989' },
-    { id: 9, name: 'Evgeniy', date: '19.03.2000' },
-    { id: 10, name: 'Vadim', date: '28.09.1997' },
-    { id: 11, name: 'Doomguy', date: '07.05.1984' },
-    { id: 12, name: 'Gordon', date: '26.08.1990' },
-    { id: 13, name: 'Freeman', date: '23.02.1989' },
-    { id: 14, name: 'Max', date: '19.03.2000' },
-    { id: 15, name: 'Payne', date: '28.09.1997' },
-    { id: 16, name: 'Crash', date: '07.05.1984' },
-    { id: 17, name: 'Bandicoot', date: '26.08.1990' },
-    { id: 18, name: 'Agent-47', date: '23.02.1989' },
-    { id: 19, name: 'Franklin', date: '19.03.2000' },
-    { id: 20, name: 'Michael', date: '28.09.1997' },
-    { id: 21, name: 'Trevor', date: '07.05.1984' },
-    { id: 22, name: 'Carl', date: '26.08.1990' },
-    { id: 23, name: 'Johnson', date: '23.02.1989' },
-    { id: 24, name: 'Vaultboy', date: '19.03.2000' },
-    { id: 25, name: 'Lara', date: '28.09.1997' },
-    { id: 26, name: 'Nathan', date: '25.05.1998' },
-    { id: 27, name: 'Drake', date: '04.02.1995' },
-    { id: 28, name: 'Joel', date: '12.04.1996' },
-    { id: 29, name: 'Ilya', date: '30.10.1994' },
-    { id: 30, name: 'John', date: '17.08.1993' },
-    { id: 31, name: 'Jacob', date: '07.05.1984' },
-    { id: 32, name: 'Andrey', date: '26.08.1990' },
-    { id: 33, name: 'Donald', date: '23.02.1989' },
-    { id: 34, name: 'Evgeniy', date: '19.03.2000' },
-    { id: 35, name: 'Vadim', date: '28.09.1997' },
-    { id: 36, name: 'Jacob', date: '07.05.1984' },
-    { id: 37, name: 'Andrey', date: '26.08.1990' },
-    { id: 38, name: 'Donald', date: '23.02.1989' },
-    { id: 39, name: 'Evgeniy', date: '19.03.2000' },
-    { id: 40, name: 'Vadim', date: '28.09.1997' },
-    { id: 41, name: 'Jacob', date: '07.05.1984' },
-    { id: 42, name: 'Andrey', date: '26.08.1990' },
-    { id: 43, name: 'Donald', date: '23.02.1989' },
-    { id: 44, name: 'Evgeniy', date: '19.03.2000' },
-    { id: 45, name: 'Vadim', date: '28.09.1997' },
-    { id: 46, name: 'Jacob', date: '07.05.1984' },
-    { id: 47, name: 'Andrey', date: '26.08.1990' },
-    { id: 48, name: 'Donald', date: '23.02.1989' },
-    { id: 49, name: 'Evgeniy', date: '19.03.2000' },
-    { id: 50, name: 'Vadim', date: '28.09.1997' },
-];
+    async loadAllUsers() {
+        let response = await fetch('./json/users.json');
+        if (response.ok) {
+            let data = await response.json();
+            const users = data.users;
+            return users;
+        } else {
+            console.error(response.status);
+        }
+    }
+}
