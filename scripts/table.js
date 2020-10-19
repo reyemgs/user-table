@@ -27,8 +27,6 @@ class Table {
 
         this.list = new UserList();
         this.init();
-
-        this.responseData = null;
     }
 
     init() {
@@ -44,10 +42,6 @@ class Table {
         const data = await this.list.loadAllUsers();
         this.list.userList = data;
     }
-
-    // loadRows() {
-    //     this.list.userList = userList;
-    // }
 
     events() {
         this.addButton.addEventListener('click', () => this.createRow());
@@ -99,7 +93,7 @@ class Table {
         this.list.setUser(id, name, date);
         this.renderPage();
     }
-    // TODO render row if user on current page
+
     removeRow() {
         let index = this.list.userList
             .map(item => item.id)
