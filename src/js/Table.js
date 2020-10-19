@@ -1,4 +1,6 @@
-class Table {
+import UserList from './UserList.js';
+
+export default class Table {
     constructor() {
         this.thead = document.getElementById('head-table');
         this.tbody = document.getElementById('user-table');
@@ -408,5 +410,3 @@ class Table {
         toolbar.remove();
     }
 }
-
-const userTable = new Table();

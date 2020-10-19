@@ -1,4 +1,4 @@
-class UserList {
+export default class UserList {
     constructor() {
         this.userList = [];
     }
@@ -23,7 +23,7 @@ class UserList {
     }
 
     async loadAllUsers() {
-        let response = await fetch('./json/users.json');
+        let response = await fetch('../json/users.json');
         if (response.ok) {
             let data = await response.json();
             const users = data.users;
