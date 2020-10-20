@@ -1,3 +1,7 @@
+@import '~normalize.css';
+@import 'quicksand.css';
+
+
 * {
     font-family: 'Quicksand', sans-serif;
 }
@@ -34,6 +38,7 @@ input[type=text]:focus {
 }
 
 .content-table {
+    
     border-collapse: collapse;
     margin: auto;
     font-size: 15px;
@@ -44,11 +49,17 @@ input[type=text]:focus {
 }
 
 .content-table thead tr {
+    font-family: 'Quicksand', sans-serif;
     background-color: #009879;
     color: #ffffff;
     text-align: left;
     font-weight: bold;
     -webkit-user-select: none;
+}
+
+thead th {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: bolder;
 }
 
 thead th:hover {
@@ -57,6 +68,7 @@ thead th:hover {
 .content-table th,
 .content-table td {
     padding: 12px 15px;
+    font-family: 'Quicksand', sans-serif;
 }
 
 .content-table tbody tr {
