@@ -31,7 +31,7 @@ module.exports = {
     context: path.resolve(__dirname, 'src'),
     mode: 'development',
     entry: {
-        main: './js/app.js',
+        main: ['@babel/polyfill', './js/app.js'],
     },
     output: {
         filename: filename('js'),
@@ -45,6 +45,7 @@ module.exports = {
         contentBase: path.join(__dirname, 'dist'),
         port: 4200,
     },
+    devtool: isDev ? 'source-map' : '',
     plugins: [
         new HTMLWebpackPlugin({
             template: './index.html',
@@ -68,12 +69,12 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.css$/i,
+                test: /\.css$/,
                 use: [
                     {
                         loader: MiniCssExtractPlugin.loader,
                         options: {
-                            publicPath: 'assets/css/',
+                            publicPath: '/',
                             hmr: isDev,
                             reloadAll: true,
                         },

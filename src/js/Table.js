@@ -1,6 +1,5 @@
-import UserList from './UserList.js';
-
-export default class Table {
+// import UserList from './UserList.js';
+class Table {
     constructor() {
         this.thead = document.getElementById('head-table');
         this.tbody = document.getElementById('user-table');
@@ -41,7 +40,7 @@ export default class Table {
     }
 
     async request() {
-        const data = await this.list.loadAllUsers();
+        const data = await this.list.loadAllUsers('../json/users.json');
         this.list.userList = data;
     }
 
@@ -410,3 +409,5 @@ export default class Table {
         toolbar.remove();
     }
 }
+
+const userTable = new Table();
