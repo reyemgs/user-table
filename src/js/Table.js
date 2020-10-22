@@ -15,7 +15,12 @@ class Table {
         this.searchNameInput = document.getElementById('search-name');
         this.searchDateInput = document.getElementById('search-date');
 
+        this.sideBar = document.getElementById('sidebar');
+        this.sideBarButton = document.getElementById('toggle-button');
+        this.selectButtonsPerPage = document.getElementById('select-buttons');
+
         this.pageState = {
+            buttonPerPage: 5,
             rowPerPage: 5,
             currentPage: 1,
             totalPages: 1,
@@ -40,7 +45,7 @@ class Table {
     }
 
     async request() {
-        const data = await this.list.loadAllUsers('../json/users.json');
+        const data = await this.list.loadAllUsers();
         this.list.userList = data;
     }
 
@@ -57,7 +62,14 @@ class Table {
         this.searchDateInput.addEventListener('keyup', () => this.searchDate());
 
         this.pageButtons.addEventListener('click', e => this.onPage(e));
-        this.select.addEventListener('change', e => this.selectRowPerPage(e));
+        this.select.addEventListener('change', e => this.changeRowPerPage(e));
+
+        this.sideBarButton.addEventListener('click', () =>
+            this.toggleSideBar()
+        );
+        this.selectButtonsPerPage.addEventListener('change', e =>
+            this.changeButtonPerPage(e)
+        );
     }
 
     // * SET/REMOVE
@@ -167,6 +179,20 @@ class Table {
         this.pageButtons.append(button);
     }
 
+    createFirstButton() {
+        const firstButton = document.createElement('button');
+        firstButton.className = 'first-button';
+        firstButton.innerHTML = '<< First';
+        this.pageButtons.prepend(firstButton);
+    }
+
+    createLastButton() {
+        const lastButton = document.createElement('button');
+        lastButton.className = 'last-button';
+        lastButton.innerHTML = 'Last >>';
+        this.pageButtons.append(lastButton);
+    }
+
     isLastPage(pages) {
         return (
             this.pageState.currentPage >= pages &&
@@ -177,9 +203,35 @@ class Table {
     generateButtons() {
         this.pageButtons.innerHTML = '';
         let pages = this.calculateTotalPages();
+        let maxLeft =
+            this.pageState.currentPage -
+            Math.floor(this.pageState.buttonPerPage / 2);
+        let maxRight =
+            this.pageState.currentPage +
+            Math.floor(this.pageState.buttonPerPage / 2);
 
-        for (let i = 1; i <= pages; i++) {
+        if (maxLeft < 1) {
+            maxLeft = 1;
+            maxRight = this.pageState.buttonPerPage;
+        }
+
+        if (maxRight > pages) {
+            maxLeft = pages - (this.pageState.buttonPerPage - 1);
+            maxRight = pages;
+            if (maxLeft < 1) {
+                maxLeft = 1;
+            }
+        }
+        for (let i = maxLeft; i <= maxRight; i++) {
             this.createButton(i);
+        }
+
+        if (this.pageState.currentPage != 1 && maxLeft > 1) {
+            this.createFirstButton();
+        }
+
+        if (this.pageState.currentPage != maxRight && maxRight < pages) {
+            this.createLastButton();
         }
 
         if (this.isLastPage(pages)) {
@@ -192,11 +244,17 @@ class Table {
 
     onPage(e) {
         if (e.target.nodeName != 'BUTTON') return;
-        this.pageState.currentPage = +e.target.innerHTML;
+        else if (e.target.className === 'first-button') {
+            this.pageState.currentPage = 1;
+        } else if (e.target.className === 'last-button') {
+            this.pageState.currentPage = this.calculateTotalPages();
+        } else {
+            this.pageState.currentPage = +e.target.innerHTML;
+        }
         this.renderPage();
     }
 
-    selectRowPerPage(e) {
+    changeRowPerPage(e) {
         if (e.target.nodeName == 'SELECT') {
             this.pageState.rowPerPage = +e.target.value;
         }
@@ -407,6 +465,18 @@ class Table {
     removeEditToolbar(td) {
         const toolbar = td.querySelector('.edit-toolbar');
         toolbar.remove();
+    }
+
+    // * SIDEBAR
+    toggleSideBar() {
+        this.sideBar.classList.toggle('active');
+    }
+
+    changeButtonPerPage(e) {
+        if (e.target.nodeName == 'SELECT') {
+            this.pageState.buttonPerPage = +e.target.value;
+        }
+        this.renderPage();
     }
 }
 

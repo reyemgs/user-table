@@ -22,7 +22,7 @@ class UserList {
         return this.userList.filter(item => item.date.includes(date));
     }
 
-    async loadAllUsers(url) {
+    async loadAllUsers(url = '../json/users.json') {
         let response = await fetch(url);
         if (response.ok) {
             let data = await response.json();
