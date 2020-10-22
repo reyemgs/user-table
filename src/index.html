@@ -21,17 +21,15 @@
     </header>
 
     <div id="sidebar">
-        <ul>
-            <span id="load-label">Dowload list <i class="fas fa-users"></i></span>
-            <li data-json-value="../json/users.json">Load User List #1</li>
-            <li>Load User List #2</li>
-            <li>Load User List #3</li>
+        <ul id="download-list">
+            <span id="load-label">Download list <i class="fas fa-users"></i></span>
+            <li data-json="../json/users.json">Load User List #1</li>
+            <li data-json="../json/users1.json">Load User List #2</li>
+            <li data-json="../json/users2.json">Load User List #3</li>
         </ul>
 
         <span id="setting-label">Settings <i class="fas fa-cog"></i></span>
-
         <div id="sidebar-settings">
-
             <div id='btnperpage'>
                 <span>Buttons Per Page: </span>
                 <select id="select-buttons">
@@ -39,7 +37,6 @@
                     <option value="10">10</option>
                 </select>
             </div>
-
             <div id='rowperpage'>
                 <span>Row Per Page: </span>
                 <select id="selection">
@@ -52,6 +49,9 @@
                 </select>
             </div>
         </div>
+
+        <span id="info-label">Table Info <i class="fas fa-info-circle"></i></span>
+        <div id="sidebar-info"></div>
     </div>
 
     <div class="search">

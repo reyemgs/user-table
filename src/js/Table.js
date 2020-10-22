@@ -18,6 +18,9 @@ class Table {
         this.sideBar = document.getElementById('sidebar');
         this.sideBarButton = document.getElementById('toggle-button');
         this.selectButtonsPerPage = document.getElementById('select-buttons');
+        this.sidebarInfo = document.getElementById('sidebar-info');
+
+        this.downloadUserList = document.getElementById('download-list');
 
         this.pageState = {
             buttonPerPage: 5,
@@ -30,7 +33,9 @@ class Table {
             ascName: true,
             ascDate: true,
         };
-
+        this.listState = {
+            currentList: '../json/users.json',
+        };
         this.list = new UserList();
         this.init();
     }
@@ -44,8 +49,8 @@ class Table {
         })();
     }
 
-    async request() {
-        const data = await this.list.loadAllUsers();
+    async request(url = this.listState.currentList) {
+        const data = await this.list.loadAllUsers(url);
         this.list.userList = data;
     }
 
@@ -70,6 +75,41 @@ class Table {
         this.selectButtonsPerPage.addEventListener('change', e =>
             this.changeButtonPerPage(e)
         );
+
+        this.lis = this.downloadUserList.querySelectorAll('li');
+        this.lis.forEach(li => {
+            if (li.getAttribute('data-json') == this.listState.currentList)
+                this.activeList(li);
+            li.addEventListener('click', () => {
+                const answer = confirm('Are you sure?');
+                if (!answer) return;
+                this.listState.currentList = li.getAttribute('data-json');
+                this.lis.forEach(li => this.removeActiveList(li));
+                this.activeList(li);
+                (async () => {
+                    await this.request(li.getAttribute('data-json'));
+                    await this.renderPage();
+                    await this.generateButtons();
+                })();
+            });
+        });
+    }
+
+    // * DOWNLOAD LIST
+    activeList(li) {
+        if (li.getAttribute('data-json') == this.listState.currentList) {
+            li.classList = 'active-list';
+        }
+        return;
+    }
+
+    confirmList() {}
+
+    removeActiveList(li) {
+        if (li.getAttribute('data-json') != this.listState.currentList) {
+            li.classList.remove('active-list');
+        }
+        return;
     }
 
     // * SET/REMOVE
@@ -134,6 +174,7 @@ class Table {
         );
         this.generateButtons();
         this.initEdit();
+        this.showInfo();
     }
 
     renderPage() {
@@ -477,6 +518,17 @@ class Table {
             this.pageState.buttonPerPage = +e.target.value;
         }
         this.renderPage();
+    }
+
+    showInfo() {
+        this.sidebarInfo.innerHTML = '';
+        const info = `
+            <span>Current list: <b>${this.listState.currentList}</b></span>
+            <span>Total pages: <b>${this.pageState.totalPages}</b></span>
+            <span>Current page: <b>${this.pageState.currentPage}</b></span>
+            <span>Shown rows: <b>${this.pageState.rowPerPage} of ${this.list.userList.length}</b></span>
+        `;
+        this.sidebarInfo.insertAdjacentHTML('afterbegin', info);
     }
 }
 

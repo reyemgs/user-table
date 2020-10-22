@@ -293,12 +293,13 @@ input[type=text] {
 
     #sidebar-settings {
         color: #f3f3f3;
+        border-bottom: 2px solid #505050;
         padding: 10px 25px;
         #btnperpage,
         #rowperpage {
-            padding: 5px 0px;
+            padding-bottom: 5px;
         }
-        #selection,
+
         #select-buttons {
             width: 40px;
             height: 25px;
@@ -308,8 +309,22 @@ input[type=text] {
         }
     }
 
+    #sidebar-info {
+        border-bottom: 2px solid #505050;
+        padding: 10px 25px;
+        span {
+            display: block;
+            color: #f3f3f3;
+            padding-bottom: 5px;
+            b {
+                color: #009879;
+            }
+        }
+    }
+
     #load-label,
-    #setting-label {
+    #setting-label,
+    #info-label {
         padding: 5px 25px;
         display: block;
         font-weight: bold;
@@ -318,4 +333,8 @@ input[type=text] {
 }
 #sidebar.active {
     left: 0px;
+}
+
+.active-list {
+    background-color: #009879;
 }

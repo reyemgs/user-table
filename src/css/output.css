@@ -271,13 +271,13 @@ input[type=text]:focus {
 }
 #sidebar #sidebar-settings {
   color: #f3f3f3;
+  border-bottom: 2px solid #505050;
   padding: 10px 25px;
 }
 #sidebar #sidebar-settings #btnperpage,
 #sidebar #sidebar-settings #rowperpage {
-  padding: 5px 0px;
+  padding-bottom: 5px;
 }
-#sidebar #sidebar-settings #selection,
 #sidebar #sidebar-settings #select-buttons {
   width: 40px;
   height: 25px;
@@ -285,8 +285,21 @@ input[type=text]:focus {
 #sidebar #sidebar-settings #selection {
   margin-left: 25px;
 }
+#sidebar #sidebar-info {
+  border-bottom: 2px solid #505050;
+  padding: 10px 25px;
+}
+#sidebar #sidebar-info span {
+  display: block;
+  color: #f3f3f3;
+  padding-bottom: 5px;
+}
+#sidebar #sidebar-info span b {
+  color: #009879;
+}
 #sidebar #load-label,
-#sidebar #setting-label {
+#sidebar #setting-label,
+#sidebar #info-label {
   padding: 5px 25px;
   display: block;
   font-weight: bold;
@@ -295,6 +308,10 @@ input[type=text]:focus {
 
 #sidebar.active {
   left: 0px;
+}
+
+.active-list {
+  background-color: #009879;
 }
 
 /*# sourceMappingURL=output.css.map */
