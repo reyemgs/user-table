@@ -1,3 +1,4 @@
+// import UserList from './UserList.js';
 class Table {
     constructor() {
         this.thead = document.getElementById('head-table');
@@ -14,7 +15,15 @@ class Table {
         this.searchNameInput = document.getElementById('search-name');
         this.searchDateInput = document.getElementById('search-date');
 
+        this.sideBar = document.getElementById('sidebar');
+        this.sideBarButton = document.getElementById('toggle-button');
+        this.selectButtonsPerPage = document.getElementById('select-buttons');
+        this.sidebarInfo = document.getElementById('sidebar-info');
+
+        this.downloadUserList = document.getElementById('download-list');
+
         this.pageState = {
+            buttonPerPage: 5,
             rowPerPage: 5,
             currentPage: 1,
             totalPages: 1,
@@ -24,20 +33,27 @@ class Table {
             ascName: true,
             ascDate: true,
         };
-
+        this.listState = {
+            currentList: '../json/users.json',
+        };
         this.list = new UserList();
+        this.notification = new TableNotification();
         this.init();
     }
 
     init() {
-        this.loadRows(userList);
-        this.renderPage();
-        this.generateButtons();
-        this.events();
+        (async () => {
+            await this.request();
+            await this.renderPage();
+            await this.generateButtons();
+            await this.events();
+            await this.notification.events();
+        })();
     }
 
-    loadRows() {
-        this.list.userList = userList;
+    async request(url = this.listState.currentList) {
+        const data = await this.list.loadAllUsers(url);
+        this.list.userList = data;
     }
 
     events() {
@@ -53,7 +69,47 @@ class Table {
         this.searchDateInput.addEventListener('keyup', () => this.searchDate());
 
         this.pageButtons.addEventListener('click', e => this.onPage(e));
-        this.select.addEventListener('change', e => this.selectRowPerPage(e));
+        this.select.addEventListener('change', e => this.changeRowPerPage(e));
+
+        this.sideBarButton.addEventListener('click', () =>
+            this.toggleSideBar()
+        );
+        this.selectButtonsPerPage.addEventListener('change', e =>
+            this.changeButtonPerPage(e)
+        );
+
+        this.lis = this.downloadUserList.querySelectorAll('li');
+        this.lis.forEach(li => {
+            if (li.getAttribute('data-json') == this.listState.currentList)
+                this.activeList(li);
+            li.addEventListener('click', () => {
+                const answer = confirm('Are you sure?');
+                if (!answer) return;
+                this.listState.currentList = li.getAttribute('data-json');
+                this.lis.forEach(li => this.removeActiveList(li));
+                this.activeList(li);
+                (async () => {
+                    await this.request(li.getAttribute('data-json'));
+                    await this.renderPage();
+                    await this.generateButtons();
+                })();
+            });
+        });
+    }
+
+    // * DOWNLOAD LIST
+    activeList(li) {
+        if (li.getAttribute('data-json') == this.listState.currentList) {
+            li.classList = 'active-list';
+        }
+        return;
+    }
+
+    removeActiveList(li) {
+        if (li.getAttribute('data-json') != this.listState.currentList) {
+            li.classList.remove('active-list');
+        }
+        return;
     }
 
     // * SET/REMOVE
@@ -88,19 +144,25 @@ class Table {
         let date = this.promptDate();
         if (name == undefined || date == undefined) return;
         this.list.setUser(id, name, date);
+        this.notification.generateSuccess({ id, name, date });
         this.renderPage();
     }
-    // TODO render row if user on current page
+
     removeRow() {
         let index = this.list.userList
             .map(item => item.id)
             .indexOf(+this.deleteInput.value);
         if (index == -1) {
-            alert('Invalid ID');
+            this.notification.generateAlert();
+            // alert('Invalid ID');
         } else {
-            alert(
-                `User ${this.list.userList[index].name} with ID ${this.list.userList[index].id} deleted`
+            this.notification.generateWarning(
+                this.list.userList[index].id,
+                this.list.userList[index].name
             );
+            // alert(
+            //     `User ${this.list.userList[index].name} with ID ${this.list.userList[index].id} deleted`
+            // );
             this.tbody.innerHTML = '';
             this.list.userList.splice(index, 1);
             this.renderPage();
@@ -118,6 +180,7 @@ class Table {
         );
         this.generateButtons();
         this.initEdit();
+        this.showInfo();
     }
 
     renderPage() {
@@ -163,6 +226,20 @@ class Table {
         this.pageButtons.append(button);
     }
 
+    createFirstButton() {
+        const firstButton = document.createElement('button');
+        firstButton.className = 'first-button';
+        firstButton.innerHTML = '<< First';
+        this.pageButtons.prepend(firstButton);
+    }
+
+    createLastButton() {
+        const lastButton = document.createElement('button');
+        lastButton.className = 'last-button';
+        lastButton.innerHTML = 'Last >>';
+        this.pageButtons.append(lastButton);
+    }
+
     isLastPage(pages) {
         return (
             this.pageState.currentPage >= pages &&
@@ -173,9 +250,35 @@ class Table {
     generateButtons() {
         this.pageButtons.innerHTML = '';
         let pages = this.calculateTotalPages();
+        let maxLeft =
+            this.pageState.currentPage -
+            Math.floor(this.pageState.buttonPerPage / 2);
+        let maxRight =
+            this.pageState.currentPage +
+            Math.floor(this.pageState.buttonPerPage / 2);
 
-        for (let i = 1; i <= pages; i++) {
+        if (maxLeft < 1) {
+            maxLeft = 1;
+            maxRight = this.pageState.buttonPerPage;
+        }
+
+        if (maxRight > pages) {
+            maxLeft = pages - (this.pageState.buttonPerPage - 1);
+            maxRight = pages;
+            if (maxLeft < 1) {
+                maxLeft = 1;
+            }
+        }
+        for (let i = maxLeft; i <= maxRight; i++) {
             this.createButton(i);
+        }
+
+        if (this.pageState.currentPage != 1 && maxLeft > 1) {
+            this.createFirstButton();
+        }
+
+        if (this.pageState.currentPage != maxRight && maxRight < pages) {
+            this.createLastButton();
         }
 
         if (this.isLastPage(pages)) {
@@ -188,11 +291,17 @@ class Table {
 
     onPage(e) {
         if (e.target.nodeName != 'BUTTON') return;
-        this.pageState.currentPage = +e.target.innerHTML;
+        else if (e.target.className === 'first-button') {
+            this.pageState.currentPage = 1;
+        } else if (e.target.className === 'last-button') {
+            this.pageState.currentPage = this.calculateTotalPages();
+        } else {
+            this.pageState.currentPage = +e.target.innerHTML;
+        }
         this.renderPage();
     }
 
-    selectRowPerPage(e) {
+    changeRowPerPage(e) {
         if (e.target.nodeName == 'SELECT') {
             this.pageState.rowPerPage = +e.target.value;
         }
@@ -290,9 +399,6 @@ class Table {
     isUndefinedID() {
         return this.list.getUserByID(+this.searchIdInput.value) == undefined;
     }
-    isUndefinedName() {
-        return this.list.getUserByName(this.searchIdName.value) == undefined;
-    }
 
     searchID() {
         this.tbody.innerHTML = '';
@@ -367,7 +473,6 @@ class Table {
         } else if (td.classList.contains('date')) {
             user.date = td.textContent.trim();
         }
-        console.log(user);
     }
 
     inEditing(td) {
@@ -407,6 +512,30 @@ class Table {
     removeEditToolbar(td) {
         const toolbar = td.querySelector('.edit-toolbar');
         toolbar.remove();
+    }
+
+    // * SIDEBAR
+    toggleSideBar() {
+        this.sideBar.classList.toggle('active');
+        this.sideBarButton.classList.toggle('active');
+    }
+
+    changeButtonPerPage(e) {
+        if (e.target.nodeName == 'SELECT') {
+            this.pageState.buttonPerPage = +e.target.value;
+        }
+        this.renderPage();
+    }
+
+    showInfo() {
+        this.sidebarInfo.innerHTML = '';
+        const info = `
+            <span>Current list: <b>${this.listState.currentList}</b></span>
+            <span>Total pages: <b>${this.pageState.totalPages}</b></span>
+            <span>Current page: <b>${this.pageState.currentPage}</b></span>
+            <span>Shown rows: <b>${this.pageState.rowPerPage} of ${this.list.userList.length}</b></span>
+        `;
+        this.sidebarInfo.insertAdjacentHTML('afterbegin', info);
     }
 }
 
