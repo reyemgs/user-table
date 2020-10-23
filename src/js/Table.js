@@ -37,6 +37,7 @@ class Table {
             currentList: '../json/users.json',
         };
         this.list = new UserList();
+        this.notification = new TableNotification();
         this.init();
     }
 
@@ -46,6 +47,7 @@ class Table {
             await this.renderPage();
             await this.generateButtons();
             await this.events();
+            await this.notification.events();
         })();
     }
 
@@ -103,8 +105,6 @@ class Table {
         return;
     }
 
-    confirmList() {}
-
     removeActiveList(li) {
         if (li.getAttribute('data-json') != this.listState.currentList) {
             li.classList.remove('active-list');
@@ -144,6 +144,7 @@ class Table {
         let date = this.promptDate();
         if (name == undefined || date == undefined) return;
         this.list.setUser(id, name, date);
+        this.notification.generateSuccess({ id, name, date });
         this.renderPage();
     }
 
@@ -152,11 +153,16 @@ class Table {
             .map(item => item.id)
             .indexOf(+this.deleteInput.value);
         if (index == -1) {
-            alert('Invalid ID');
+            this.notification.generateAlert();
+            // alert('Invalid ID');
         } else {
-            alert(
-                `User ${this.list.userList[index].name} with ID ${this.list.userList[index].id} deleted`
+            this.notification.generateWarning(
+                this.list.userList[index].id,
+                this.list.userList[index].name
             );
+            // alert(
+            //     `User ${this.list.userList[index].name} with ID ${this.list.userList[index].id} deleted`
+            // );
             this.tbody.innerHTML = '';
             this.list.userList.splice(index, 1);
             this.renderPage();
@@ -511,6 +517,7 @@ class Table {
     // * SIDEBAR
     toggleSideBar() {
         this.sideBar.classList.toggle('active');
+        this.sideBarButton.classList.toggle('active');
     }
 
     changeButtonPerPage(e) {

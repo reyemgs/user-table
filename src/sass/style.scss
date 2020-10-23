@@ -5,10 +5,10 @@ $green: #009879;
 $hover-green: #007b62;
 $grey: #dddddd;
 $white: #ffffff;
-$red: #99340F;
+$red: #99340f;
 
 * {
-    font-family: 'Quicksand', sans-serif;
+    font-family: "Quicksand", sans-serif;
     margin: 0px;
     padding: 0px;
 }
@@ -40,10 +40,20 @@ header {
             background: #dddddd;
             margin: 5px 0px;
         }
-        &:hover {
+        &.active {
             span {
                 background: #009879;
             }
+        }
+    }
+    #notification-button {
+        position: absolute;
+        right: 25px;
+        top: 22px;
+        color: #dddddd;
+        z-index: 101;
+        &.active {
+            color: #ebcc46;
         }
     }
 }
@@ -59,7 +69,7 @@ select {
     }
 }
 
-input[type=text] {
+input[type="text"] {
     border: 2px solid #dddddd;
     border-radius: 8px;
     font-size: 15px;
@@ -83,7 +93,7 @@ input[type=text] {
 
     thead {
         tr {
-            font-family: 'Quicksand', sans-serif;
+            font-family: "Quicksand", sans-serif;
             background-color: $green;
             color: $white;
             text-align: left;
@@ -92,7 +102,7 @@ input[type=text] {
         }
 
         th {
-            font-family: 'Quicksand', sans-serif;
+            font-family: "Quicksand", sans-serif;
             font-weight: bolder;
             padding: 12px 15px;
             &:hover {
@@ -162,10 +172,10 @@ input[type=text] {
         border-radius: 5px;
         font-size: 15px;
         font-weight: 500;
-        transition: .2s;
+        transition: 0.2s;
         overflow: hidden;
         text-align: center;
-        font-family: 'Quicksand', sans-serif;
+        font-family: "Quicksand", sans-serif;
         outline: none;
     }
     .add-user {
@@ -177,10 +187,10 @@ input[type=text] {
         }
     }
     .delete-user {
-        border: 2px solid #99340F;
-        color: #99340F;
+        border: 2px solid #99340f;
+        color: #99340f;
         &:hover {
-            background-color:  #99340F;
+            background-color: #99340f;
             color: #ffffff;
         }
     }
@@ -208,10 +218,10 @@ input[type=text] {
             border: 2px solid #009879;
             border-radius: 5px;
             font-size: 15px;
-            transition: .2s;
+            transition: 0.2s;
             overflow: hidden;
             text-align: center;
-            font-family: 'Quicksand', sans-serif;
+            font-family: "Quicksand", sans-serif;
             outline: none;
             -webkit-user-select: none;
             &:hover {
@@ -236,10 +246,10 @@ input[type=text] {
     border-radius: 5px;
     font-weight: 500;
     font-size: 12px;
-    transition: .2s;
+    transition: 0.2s;
     overflow: hidden;
     text-align: center;
-    font-family: 'Quicksand', sans-serif;
+    font-family: "Quicksand", sans-serif;
     outline: none;
 }
 
@@ -253,10 +263,10 @@ input[type=text] {
 }
 
 .btn-cancel {
-    border: 2px solid #99340F;
-    color: #99340F;
+    border: 2px solid #99340f;
+    color: #99340f;
     &:hover {
-        background-color:  #99340F;
+        background-color: #99340f;
         color: #ffffff;
     }
 }
@@ -289,7 +299,6 @@ input[type=text] {
     ul > li:last-child {
         border-bottom: 2px solid #505050;
     }
-
 
     #sidebar-settings {
         color: #f3f3f3;
@@ -337,4 +346,95 @@ input[type=text] {
 
 .active-list {
     background-color: #009879;
+}
+
+@keyframes movenotification {
+    from {
+        position: absolute;
+        right: -400px;
+    }
+    to {
+        position: relative;
+        right: 0px;
+    }
+}
+
+.notification-bar {
+    position: fixed;
+    overflow-y: scroll;
+    -webkit-user-select: none;
+    width: 450px;
+    height: calc(100% - 60px);
+    // background-color: #e7e7e7;
+
+    // background-color: #424242;
+    top: 62px;
+    right: -450px;
+    transition: all 200ms;
+    z-index: 100;
+    margin-bottom: 100px;
+    .notification {
+        opacity: 100%;
+        width: 400px;
+        height: 90px;
+        border-radius: 8px;
+        margin: 10px 0px;
+        margin-left: 20px;
+        animation: movenotification 0.2s 1 ease;
+    }
+    .content {
+        padding: 25px 20px;
+    }
+    .notification-warning {
+        background: #fff3bd;
+        border-left: 10px solid #eed770;
+        color: #928448;
+        span {
+            display: block;
+            font-size: 15px;
+            color: #928448;
+        }
+    }
+
+    .notification-success {
+        background: #d0ffbd;
+        border-left: 10px solid #81c96b;
+        color: #558547;
+        span {
+            display: block;
+            font-size: 15px;
+            color: #558547;
+        }
+    }
+
+    .notification-alert {
+        background: #ffbdbd;
+        border-left: 10px solid #ff9090;
+        color: #8f4d4d;
+        span {
+            display: block;
+            font-size: 15px;
+            color: #8f4d4d;
+        }
+    }
+
+    .close-button {
+        position: absolute;
+        right: 50px;
+        width: 30px;
+        height: 25px;
+        i {
+            display: block;
+            padding-top: 5px;
+        }
+        &:hover {
+            i {
+                color: black;
+            }
+        }
+    }
+
+    &.active {
+        right: 0px;
+    }
 }

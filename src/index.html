@@ -18,6 +18,8 @@
             <span></span>
         </div>
         <h1>User Table</h1>
+        <div id="notification-button"><i class="fas fa-bell fa-lg"></i></div>
+
     </header>
 
     <div id="sidebar">
@@ -54,6 +56,9 @@
         <div id="sidebar-info"></div>
     </div>
 
+    <div class="notification-bar" id="notification-bar">
+    </div>
+
     <div class="search">
         <input type="text" id="search-id" placeholder="Search for ID..." />
         <input type="text" id="search-name" placeholder="Search for name..." />
@@ -70,22 +75,22 @@
         <input type="text" class="delete-input" id="delete-input" placeholder="ID" />
     </div>
 
-    <div class="responsive-wrapper">
-        <table class="content-table">
-            <thead id="head-table">
-                <th class="sort-id">ID<i class="fas fa-id-card"></i></th>
-                <th class="sort-name">Name<i class="fas fa-signature"></i></th>
-                <th class="sort-date">Date<i class="fas fa-calendar-alt"></i></th>
-            </thead>
-            <tbody id="user-table"></tbody>
-        </table>
-    </div>
+
+    <table class="content-table">
+        <thead id="head-table">
+            <th class="sort-id">ID<i class="fas fa-id-card"></i></th>
+            <th class="sort-name">Name<i class="fas fa-signature"></i></th>
+            <th class="sort-date">Date<i class="fas fa-calendar-alt"></i></th>
+        </thead>
+        <tbody id="user-table"></tbody>
+    </table>
 
     <div class="pages" id="pages">
         <div class="page-buttons" id="page-buttons"></div>
 
     </div>
     <script src="./js/UserList.js"></script>
+    <script src="./js/TableNotification.js"></script>
     <script src="./js/Table.js"></script>
 </body>
 

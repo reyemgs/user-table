@@ -33,8 +33,18 @@ header .toggle-button span {
   background: #dddddd;
   margin: 5px 0px;
 }
-header .toggle-button:hover span {
+header .toggle-button.active span {
   background: #009879;
+}
+header #notification-button {
+  position: absolute;
+  right: 25px;
+  top: 22px;
+  color: #dddddd;
+  z-index: 101;
+}
+header #notification-button.active {
+  color: #ebcc46;
 }
 
 select {
@@ -160,11 +170,11 @@ input[type=text]:focus {
   color: #ffffff;
 }
 .add-delete-buttons .delete-user {
-  border: 2px solid #99340F;
-  color: #99340F;
+  border: 2px solid #99340f;
+  color: #99340f;
 }
 .add-delete-buttons .delete-user:hover {
-  background-color: #99340F;
+  background-color: #99340f;
   color: #ffffff;
 }
 .add-delete-buttons .delete-input {
@@ -233,11 +243,11 @@ input[type=text]:focus {
 }
 
 .btn-cancel {
-  border: 2px solid #99340F;
-  color: #99340F;
+  border: 2px solid #99340f;
+  color: #99340f;
 }
 .btn-cancel:hover {
-  background-color: #99340F;
+  background-color: #99340f;
   color: #ffffff;
 }
 
@@ -312,6 +322,87 @@ input[type=text]:focus {
 
 .active-list {
   background-color: #009879;
+}
+
+@keyframes movenotification {
+  from {
+    position: absolute;
+    right: -400px;
+  }
+  to {
+    position: relative;
+    right: 0px;
+  }
+}
+.notification-bar {
+  position: fixed;
+  overflow-y: scroll;
+  -webkit-user-select: none;
+  width: 450px;
+  height: calc(100% - 60px);
+  top: 62px;
+  right: -450px;
+  transition: all 200ms;
+  z-index: 100;
+  margin-bottom: 100px;
+}
+.notification-bar .notification {
+  opacity: 100%;
+  width: 400px;
+  height: 90px;
+  border-radius: 8px;
+  margin: 10px 0px;
+  margin-left: 20px;
+  animation: movenotification 0.2s 1 ease;
+}
+.notification-bar .content {
+  padding: 25px 20px;
+}
+.notification-bar .notification-warning {
+  background: #fff3bd;
+  border-left: 10px solid #eed770;
+  color: #928448;
+}
+.notification-bar .notification-warning span {
+  display: block;
+  font-size: 15px;
+  color: #928448;
+}
+.notification-bar .notification-success {
+  background: #d0ffbd;
+  border-left: 10px solid #81c96b;
+  color: #558547;
+}
+.notification-bar .notification-success span {
+  display: block;
+  font-size: 15px;
+  color: #558547;
+}
+.notification-bar .notification-alert {
+  background: #ffbdbd;
+  border-left: 10px solid #ff9090;
+  color: #8f4d4d;
+}
+.notification-bar .notification-alert span {
+  display: block;
+  font-size: 15px;
+  color: #8f4d4d;
+}
+.notification-bar .close-button {
+  position: absolute;
+  right: 50px;
+  width: 30px;
+  height: 25px;
+}
+.notification-bar .close-button i {
+  display: block;
+  padding-top: 5px;
+}
+.notification-bar .close-button:hover i {
+  color: black;
+}
+.notification-bar.active {
+  right: 0px;
 }
 
 /*# sourceMappingURL=output.css.map */
